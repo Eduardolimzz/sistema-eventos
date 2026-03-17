@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,11 +11,12 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    if (!session('usuario_id')) {
-        return redirect('/login');
-    }
     return view('events.dashboard');
-});
+})->middleware('auth')->name('dashboard');
+
+Route::get('/login', function () {
+    return view('events.index');
+})->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,7 +28,7 @@ Route::get('/eventos', function() {
     return view('events.index');
 });
 
-Route::get('/cadastro', [RegisterController::class, 'create'])->name('cadastro');
-Route::post('/cadastro', [RegisterController::class, 'store']);
-Route::post('/register', [RegisterController::class, 'store']);
+Route::get('/cadastro', [RegisteredUserController::class, 'create'])->name('cadastro');
+// Route::post('/cadastro', [RegisterController::class, 'store']);
+Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
