@@ -1,6 +1,8 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,8 +10,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    if (!session('usuario_id')) {
+        return redirect('/login');
+    }
+    return view('events.dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,5 +29,4 @@ Route::get('/eventos', function() {
 Route::get('/cadastro', [RegisterController::class, 'create'])->name('cadastro');
 Route::post('/cadastro', [RegisterController::class, 'store']);
 Route::post('/register', [RegisterController::class, 'store']);
-
-//require __DIR__.'/auth.php';
+Route::post('/login', [LoginController::class, 'login']);
