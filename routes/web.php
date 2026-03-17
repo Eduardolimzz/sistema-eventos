@@ -1,6 +1,6 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,4 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('/eventos', function() {
+    return view('events.index');
+});
+
+Route::get('/cadastro', [RegisterController::class, 'create'])->name('cadastro');
+Route::post('/cadastro', [RegisterController::class, 'store']);
+Route::post('/register', [RegisterController::class, 'store']);
+
+//require __DIR__.'/auth.php';
