@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('description');
+            $table->string('location');
             $table->datetime('data_evento');
             $table->unsignedBigInteger('max_participantes')->default(0);
             $table->timestamps();

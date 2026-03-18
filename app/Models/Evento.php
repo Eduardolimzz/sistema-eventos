@@ -11,6 +11,7 @@ class Evento extends Model
     protected $fillable = [
         'title',
         'description',
+        'location',
         'data_evento',
         'max_participantes',
         'user_id',
