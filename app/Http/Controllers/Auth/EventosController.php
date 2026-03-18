@@ -12,7 +12,7 @@ class EventosController extends Controller
 
     public function index()
     {
-        $eventos = Evento::where('user_id', Auth::id())->get();
+        $eventos = Evento::with('usuario')->latest()->get();
         return view('events.dashboard', compact('eventos'));
     }
 
