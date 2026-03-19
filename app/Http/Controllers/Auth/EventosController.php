@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Evento;
+use App\Models\Registro;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -11,11 +12,14 @@ class EventosController extends Controller
 {
 
     public function index()
-    {
-        $eventos = Evento::with('usuario')->latest()->get();
-        return view('events.dashboard', compact('eventos'));
-    }
+{
+    $eventos = Evento::with('usuario')->latest()->get();
+    $registros = Registro::where('user_id', Auth::id())
+        ->pluck('evento_id')
+        ->toArray();
 
+    return view('events.dashboard', compact('eventos', 'registros'));
+}
     public function create()
     {
         return view('events.create');
@@ -72,4 +76,40 @@ class EventosController extends Controller
         return redirect()->route('events.index');
     }
 
+    public function confirmarPresenca(Request $request, $id)
+    {
+        $userId = Auth::id();
+        $eventoId = $id;
+
+        // Verifica se já existe registro
+        $jaExiste = Registro::where('user_id', $userId)
+            ->where('evento_id', $eventoId)
+            ->exists();
+
+        if ($jaExiste) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Você já está inscrito neste evento.');
+        }
+
+        // Cria o registro
+        Registro::create([
+            'user_id' => $userId,
+            'evento_id' => $eventoId,
+            'status' => 'confirmado',
+        ]);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Inscrição realizada com sucesso!');
+    }
+
+    public function dashboard()
+    {
+        $eventos = Evento::with('user')->latest()->get();
+
+        $registros = Registro::where('user_id', Auth::id())
+            ->pluck('evento_id')
+            ->toArray();
+
+        return view('events.dashboard', compact('eventos', 'registros'));
+    }
 }

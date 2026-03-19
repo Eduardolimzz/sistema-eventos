@@ -8,9 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('events.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('events.dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('events', EventosController::class)->middleware('auth');
-// Route::get('/dashboard', [EventosController::class, 'index']);
-Route::get('/dashboard', [EventosController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [EventosController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::post('/events/{id}/confirm', [EventosController::class, 'confirmarPresenca'])->middleware('auth');
+
 require __DIR__ . '/auth.php';

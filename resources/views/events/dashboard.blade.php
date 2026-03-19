@@ -84,7 +84,22 @@
                     </p>
 
                     <p class="text-sm text-indigo-600">
-                        Criado por: {{ $evento->user->name ?? 'Desconhecido' }}
+                        Criado por: {{ $evento->usuario->name ?? 'Desconhecido' }}
+                    </p>
+                    <p>
+
+                    @if (in_array($evento->id, $registros))
+                        <span class="bg-gray-400 px-3 py-1 rounded text-white">
+                            ✔ Confirmado
+                        </span>
+                    @else
+                        <form action="/events/{{ $evento->id }}/confirm" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-green-500 px-3 py-1 rounded text-white">
+                                Confirmar Presença
+                            </button>
+                        </form>
+                    @endif
                     </p>
                 </div>
             @empty
