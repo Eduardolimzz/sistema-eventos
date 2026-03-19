@@ -101,15 +101,4 @@ class EventosController extends Controller
         return redirect()->route('dashboard')
             ->with('success', 'Inscrição realizada com sucesso!');
     }
-
-    public function dashboard()
-    {
-        $eventos = Evento::with('user')->latest()->get();
-
-        $registros = Registro::where('user_id', Auth::id())
-            ->pluck('evento_id')
-            ->toArray();
-
-        return view('events.dashboard', compact('eventos', 'registros'));
-    }
 }

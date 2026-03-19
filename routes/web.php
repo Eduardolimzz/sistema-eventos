@@ -2,15 +2,19 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\EventosController;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Evento;
+use App\Models\Registro;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $eventos = Evento::with('usuario')->latest()->get();
+    $registros = Auth::check()
+    ? Registro::where('user_id', Auth::id())->pluck('evento_id')->toArray()
+    : [];
 
-// Route::get('/dashboard', function () {
-//     return view('events.dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+    return view('welcome', compact('eventos', 'registros'));
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

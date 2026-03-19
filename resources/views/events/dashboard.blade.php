@@ -37,11 +37,13 @@
             $outrosEventos = $eventos->where('user_id', '!=', auth()->id());
         @endphp
 
+        {{-- {{ dd($eventos) }} --}}
         <!-- MEUS EVENTOS -->
         <div class="mb-10">
             <h2 class="text-xl font-bold mb-4">Meus Eventos</h2>
 
             @forelse ($meusEventos as $evento)
+
                 <div class="bg-white p-4 rounded shadow mb-3">
                     <h3 class="font-bold text-lg">{{ $evento->title }}</h3>
                     <p>Descrição: {{ $evento->description }}</p>

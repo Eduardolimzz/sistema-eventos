@@ -6,6 +6,9 @@
     <title>Formulário de Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<div class="w-96 mb-4">
+    <a href="/" class="text-sm text-gray-500 hover:text-gray-800">← Voltar ao início</a>
+</div>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
 
     <div class="bg-white p-8 rounded-lg shadow-md w-96">
@@ -62,6 +65,9 @@
             </div>
 
         </form>
+        <p class="text-center text-sm text-gray-600 mt-4">
+            Não tem conta? <a href="/register" class="text-indigo-600 hover:underline">Cadastrar</a>
+        </p>
     </div>
 
 </body>
